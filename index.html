@@ -440,9 +440,9 @@
           font-size: 1rem;
         }
         button {
-          max-width: 100%; /* Ocupa todo el ancho en móviles */
+          max-width: 50%; /* Ocupa todo el ancho en móviles */
           padding: 12px;
-          font-size: 0.9rem; /* Tamaño de fuente más pequeño para móviles */
+          font-size: 11px; /* Tamaño de fuente más pequeño para móviles */
         }
         /* Ajuste del logo en móviles */
         .autodesk-logo {
@@ -548,13 +548,13 @@
 
       function displayCertificate(data) {
         resultContainer.innerHTML = `
-          <div class="certificate-card">
-              <h3><i class="fi fi-rr-badge-check" style="color: var(--success-color); margin-right: 12px; font-size: 1.6rem; vertical-align: middle;"></i>Certificado Encontrado</h3>
-              <p><strong>Nombre:</strong> ${data.nombre}</p>
-              <p><strong>Programa:</strong> ${data.programa}</p>
-              <p><strong>Fecha de Emisión:</strong> ${data.fecha}</p>
-              <a href="${data.urlPdf}" target="_blank" class="download-link">Descargar (PDF)</a>
-          </div>`;
+            <div class="certificate-card">
+                <h3><i class="fi fi-rr-badge-check" style="color: var(--success-color); margin-right: 12px; font-size: 1.6rem; vertical-align: middle;"></i>Certificado Encontrado</h3>
+                <p><strong>Nombre:</strong> ${data.nombre}</p>
+                <p><strong>Programa:</strong> ${data.programa}</p>
+                <p><strong>Fecha de Emisión:</strong> ${data.fecha}</p>
+                <a href="${data.urlPdf}" download class="download-link">Descargar (PDF)</a>
+            </div>`;
       }
 
       function displayError(title, message) {
