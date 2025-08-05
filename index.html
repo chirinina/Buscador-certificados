@@ -120,7 +120,17 @@
         box-shadow: 0 10px 40px var(--shadow-color);
         animation: fadeInFromBottom 1s ease-in-out 0.5s;
         animation-fill-mode: both;
+        position: relative; /* Añadido para posicionar el logo */
       }
+      /* ---- Estilo para el logo de Autodesk ---- */
+      .autodesk-logo {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        width: 100px; /* Ancho del logo */
+        opacity: 0.8;
+      }
+      /* ---- Fin del estilo para el logo ---- */
 
       @keyframes fadeInFromBottom {
         from {
@@ -194,14 +204,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 30%;
+        width: 100%; /* Ancho completo por defecto */
+        max-width: 200px; /* Ancho máximo para el botón */
+        margin: 0 auto; /* Centrar el botón */
         background: linear-gradient(45deg, var(--primary-color), #009688);
         color: white;
         border: none;
-        padding: 10px;
+        padding: 14px; /* Aumento ligero del padding */
         border-radius: 18px;
         cursor: pointer;
-        font-size: 9px;
+        font-size: 1rem; /* Tamaño de fuente legible */
         font-weight: 500;
         transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
         text-transform: uppercase;
@@ -431,6 +443,17 @@
         .verification-container p {
           font-size: 1rem;
         }
+        button {
+          max-width: 100%; /* Ocupa todo el ancho en móviles */
+          padding: 12px;
+          font-size: 0.9rem; /* Tamaño de fuente más pequeño para móviles */
+        }
+        /* Ajuste del logo en móviles */
+        .autodesk-logo {
+          top: 15px;
+          right: 15px;
+          width: 80px;
+        }
       }
     </style>
   </head>
@@ -441,11 +464,16 @@
       </div>
       <div class="content-wrapper">
         <div class="verification-container">
+          <!-- Logo de Autodesk añadido aquí -->
+          <img
+            src="https://logos-world.net/wp-content/uploads/2023/09/Autodesk-Emblem.png"
+            alt="Logo de Autodesk"
+            class="autodesk-logo"
+          />
+          <!-- Fin del logo -->
+
           <h1>Verificación</h1>
-          <p>
-            Introduzca el Carnet de Identidad del participante para validar el
-            certificado.
-          </p>
+          <p>Por favor, introduzca el número de Carnet de Identidad.</p>
           <form id="search-form">
             <div class="input-wrapper">
               <input
@@ -509,7 +537,7 @@
           } else {
             displayError(
               "Certificado no encontrado.",
-              "Verifique que el número sea correcto. Si el problema persiste, contáctenos."
+              "Verifique que el número sea correcto. <br><br><strong>Nota:</strong> Los certificados deben ser generados por un administrador para aparecer aquí. Si su certificado no se genero aun no le va aparecer, por favor contactate"
             );
           }
         } catch (error) {
@@ -529,7 +557,7 @@
               <p><strong>Nombre:</strong> ${data.nombre}</p>
               <p><strong>Programa:</strong> ${data.programa}</p>
               <p><strong>Fecha de Emisión:</strong> ${data.fecha}</p>
-              <a href="${data.urlPdf}" target="_blank" class="download-link">Descargar(PDF)</a>
+              <a href="${data.urlPdf}" target="_blank" class="download-link">Descargar (PDF)</a>
           </div>`;
       }
 
@@ -540,7 +568,7 @@
           // --- NÚMERO Y MENSAJE DE WHATSAPP CONFIGURADOS ---
           const WHATSAPP_NUMBER = "59174681419"; // Tu número con código de país
           const PREWRITTEN_MESSAGE =
-            "Hola, tengo una consulta sobre la verificación de mi certificado.";
+            "Hola, tengo una consulta sobre el certificado de autodesk.";
           const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
             PREWRITTEN_MESSAGE
           )}`;
