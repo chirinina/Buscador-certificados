@@ -173,7 +173,7 @@
         width: 100%;
         padding: 16px 16px 16px 50px; /* Ajuste para el icono */
         border: 2px solid var(--border-color);
-        border-radius: 8px; /* Borde más sutil */
+        border-radius: 18px; /* Borde más sutil */
         font-size: 1rem;
         font-family: "Roboto", sans-serif;
         box-sizing: border-box;
@@ -194,14 +194,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
+        width: 30%;
         background: linear-gradient(45deg, var(--primary-color), #009688);
         color: white;
         border: none;
-        padding: 16px;
-        border-radius: 8px;
+        padding: 10px;
+        border-radius: 18px;
         cursor: pointer;
-        font-size: 1.1rem;
+        font-size: 9px;
         font-weight: 500;
         transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
         text-transform: uppercase;
@@ -323,7 +323,7 @@
         background-color: var(--success-color);
         color: white;
         text-decoration: none;
-        border-radius: 6px;
+        border-radius: 20px;
         font-weight: 500;
         transition: background-color 0.2s, transform 0.2s;
       }
@@ -482,16 +482,15 @@
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const searchId = searchInput.value.trim();
+        const searchId = searchInput.value.trim().replace(/\s/g, ""); // Limpia espacios
 
-        // --- NUEVA VALIDACIÓN ---
-        // Verifica que el input contenga solo números y tenga 8 o más dígitos.
-        if (!/^\d{8,}$/.test(searchId)) {
+        // La validación ahora solo revisa que sean dígitos y 7 o más.
+        if (!/^\d{7,}$/.test(searchId)) {
           displayError(
-            "ID no válido.",
-            "Por favor, ingrese un número de carnet válido (al menos 8 dígitos sin letras ni espacios)."
+            "Carnet no válido.",
+            "Por favor, ingrese un número de carnet válido (al menos 7 dígitos, sin letras ni guiones)."
           );
-          return; // Detiene la ejecución si no es válido
+          return;
         }
 
         loader.style.display = "flex";
@@ -530,22 +529,21 @@
               <p><strong>Nombre:</strong> ${data.nombre}</p>
               <p><strong>Programa:</strong> ${data.programa}</p>
               <p><strong>Fecha de Emisión:</strong> ${data.fecha}</p>
-              <a href="${data.urlPdf}" target="_blank" class="download-link">Descargar Certificado (PDF)</a>
+              <a href="${data.urlPdf}" target="_blank" class="download-link">Descargar(PDF)</a>
           </div>`;
       }
 
-      /**
-       * FUNCIÓN DE ERROR MEJORADA
-       * Acepta un título y un mensaje para ser más flexible.
-       * Muestra el icono de WhatsApp y el correo si el certificado no se encuentra.
-       */
       function displayError(title, message) {
         let contactInfo = "";
 
-        // Solo muestra la info de contacto si el error es "Certificado no encontrado"
         if (title === "Certificado no encontrado.") {
-          // RECUERDA CAMBIAR EL NÚMERO DE TELÉFONO AQUÍ
-          const WHATSAPP_NUMBER = "59112345678"; // Ejemplo: 591 para Bolivia + número
+          // --- NÚMERO Y MENSAJE DE WHATSAPP CONFIGURADOS ---
+          const WHATSAPP_NUMBER = "59174681419"; // Tu número con código de país
+          const PREWRITTEN_MESSAGE =
+            "Hola, tengo una consulta sobre la verificación de mi certificado.";
+          const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+            PREWRITTEN_MESSAGE
+          )}`;
 
           contactInfo = `
             <p style="font-size: 0.9rem; margin-top: 15px; color: var(--secondary-font-color);">
@@ -555,7 +553,7 @@
                 <a href="mailto:efrain.chiri@esam.edu.bo" title="Enviar correo">
                     <img src="https://cdn.icon-icons.com/icons2/2631/PNG/512/gmail_new_logo_icon_159149.png" alt="Email" width="32" height="32">
                 </a>
-                <a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" title="Contactar por WhatsApp">
+                <a href="${WHATSAPP_URL}" target="_blank" title="Contactar por WhatsApp">
                     <img src="https://cdn.icon-icons.com/icons2/729/PNG/512/whatsapp_icon-icons.com_62756.png" alt="WhatsApp" width="32" height="32">
                 </a>
             </div>`;
