@@ -232,6 +232,26 @@
         box-shadow: 0 2px 10px rgba(0, 121, 107, 0.4);
       }
 
+      /* Animación para el botón al hacer click */
+      .shrinking {
+        animation: shrinkAndFadeOut 0.5s forwards;
+      }
+
+      @keyframes shrinkAndFadeOut {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0);
+          opacity: 0;
+          height: 0;
+          padding: 0;
+          margin: 0;
+          border: 0;
+        }
+      }
+
       .loader {
         display: flex;
         justify-content: center;
@@ -503,6 +523,7 @@
       const searchInput = document.getElementById("search-input");
       const resultContainer = document.getElementById("result-container");
       const loader = document.getElementById("loader");
+      const submitButton = form.querySelector('button[type="submit"]');
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -512,15 +533,24 @@
         if (!/^\d{7,}$/.test(searchId)) {
           displayError(
             "Carnet no válido.",
-            "Por favor, ingrese un número de carnet válido (al menos 8 dígitos, sin letras ni guiones)."
+            "Por favor, ingrese un número de carnet válido (al menos 7 dígitos, sin letras ni guiones)."
           );
           return;
         }
 
-        loader.style.display = "flex";
+        // Aplicar animación al botón y luego ocultarlo
+        submitButton.classList.add("shrinking");
+
+        // Esperar a que la animación del botón termine para mostrar el loader
+        setTimeout(() => {
+          submitButton.style.display = "none"; // Ocultar el botón
+          loader.style.display = "flex";
+        }, 500); // 500ms es la duración de la animación
+
         resultContainer.innerHTML = "";
 
         try {
+          // Simular un pequeño retraso para que la animación sea visible
           await new Promise((resolve) => setTimeout(resolve, 500));
 
           const response = await fetch(
@@ -533,7 +563,7 @@
           } else {
             displayError(
               "Certificado no encontrado.",
-              "Verifique que el número sea correcto. <br><br><strong>Nota:</strong> Los certificados deben ser generados por un administrador para aparecer aquí. Si su certificado no se genero aun no le va aparecer, por favor contactate"
+              "Verifique que el número sea correcto. <br><br><strong>Nota:</strong> Los certificados deben ser generados por un administrador para aparecer aquí. Si su certificado no se genero aun no le va aparecer, por favor contactese"
             );
           }
         } catch (error) {
@@ -543,6 +573,11 @@
           );
         } finally {
           loader.style.display = "none";
+          // Restaurar el botón para futuras búsquedas
+          setTimeout(() => {
+            submitButton.classList.remove("shrinking");
+            submitButton.style.display = "flex";
+          }, 100);
         }
       });
 
@@ -564,7 +599,7 @@
           // --- NÚMERO Y MENSAJE DE WHATSAPP CONFIGURADOS ---
           const WHATSAPP_NUMBER = "59174681419"; // Tu número con código de país
           const PREWRITTEN_MESSAGE =
-            "Hola, tengo una consulta sobre el certificado de autodesk.";
+            "Hola, Buenas Ing tengo una consulta sobre el *Certificado* de autodesk.";
           const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
             PREWRITTEN_MESSAGE
           )}`;
