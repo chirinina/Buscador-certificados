@@ -164,17 +164,20 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 12px;
+        /* gap: 12px; MODIFICADO */
         background: linear-gradient(145deg, var(--secondary-color), var(--primary-color));
         color: white;
         border: none;
         padding: 18px;
-        border-radius: 15px;
+        border-radius: 18px; /* MODIFICADO */
         cursor: pointer;
         font-size: 1.1rem;
         font-weight: 600;
         transition: all 0.3s ease;
         box-shadow: 5px 5px 15px var(--highlight-shadow-dark), -5px -5px 15px var(--highlight-shadow-light);
+        width: 68px; /* AÑADIDO */
+        height: 68px; /* AÑADIDO */
+        align-self: center; /* AÑADIDO */
       }
       .submit-button:hover {
         transform: translateY(-3px);
@@ -190,7 +193,7 @@
         transform: translateY(0);
       }
       .submit-button .fi {
-        font-size: 1.3rem;
+        font-size: 1.6rem; /* MODIFICADO */
       }
 
       /* Loader */
@@ -263,6 +266,14 @@
         padding: 25px;
         border-radius: 20px;
         box-shadow: 5px 5px 15px var(--highlight-shadow-dark), -5px -5px 15px var(--highlight-shadow-light);
+        display: flex; /* AÑADIDO */
+        flex-wrap: wrap; /* AÑADIDO */
+        justify-content: space-between; /* AÑADIDO */
+        align-items: center; /* AÑADIDO */
+        gap: 15px; /* AÑADIDO */
+      }
+      .results-header-info {
+        flex-grow: 1; /* AÑADIDO */
       }
       .results-header h2 {
         font-size: 2rem;
@@ -279,15 +290,21 @@
         font-size: 1.1rem;
       }
       .new-search-button {
-          margin-top: 20px;
+          /* margin-top: 20px; ELIMINADO */
           background: transparent;
           border: 2px solid var(--primary-color);
           color: var(--primary-color);
-          padding: 10px 20px;
-          border-radius: 10px;
+          padding: 10px; /* MODIFICADO */
+          border-radius: 12px; /* MODIFICADO */
           font-weight: 600;
           cursor: pointer;
           transition: all 0.2s ease;
+          width: 46px; /* AÑADIDO */
+          height: 46px; /* AÑADIDO */
+          display: flex; /* AÑADIDO */
+          align-items: center; /* AÑADIDO */
+          justify-content: center; /* AÑADIDO */
+          font-size: 1.2rem; /* AÑADIDO */
       }
       .new-search-button:hover {
           background-color: var(--primary-color);
@@ -416,7 +433,7 @@
       .download-link {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        /* gap: 8px; MODIFICADO */
         text-decoration: none;
         padding: 12px 25px;
         border-radius: 10px;
@@ -467,6 +484,10 @@
          .search-container {
             padding: 35px 20px;
         }
+        .results-header {
+            justify-content: center;
+            text-align: center;
+        }
       }
     </style>
 </head>
@@ -484,9 +505,9 @@
             <input type="text" id="search-input" placeholder="Ej: 12345678" required />
             <i class="fi fi-rr-id-badge"></i>
           </div>
-          <button type="submit" class="submit-button">
+          <!-- BOTÓN MODIFICADO: sin texto, con title -->
+          <button type="submit" class="submit-button" title="Verificar">
             <i class="fi fi-rr-search-alt"></i>
-            <span>Verificar</span>
           </button>
         </form>
         <div id="loader" style="display: none">
@@ -501,10 +522,14 @@
     <!-- Vista de Resultados (Oculta por defecto) -->
     <section id="results-view" class="view">
       <header class="results-header">
-        <h2 id="results-title"></h2>
-        <p id="results-count"></p>
-        <button id="new-search" class="new-search-button">
-            <i class="fi fi-rr-search"></i> Realizar Nueva Búsqueda
+        <!-- Contenedor para la información de texto -->
+        <div class="results-header-info">
+          <h2 id="results-title"></h2>
+          <p id="results-count"></p>
+        </div>
+        <!-- BOTÓN MODIFICADO: sin texto, con title -->
+        <button id="new-search" class="new-search-button" title="Realizar Nueva Búsqueda">
+            <i class="fi fi-rr-search"></i>
         </button>
       </header>
       
@@ -598,12 +623,11 @@
       function setLoadingState(isLoading) {
         if (isLoading) {
             submitButton.disabled = true;
-            submitButton.querySelector('span').textContent = 'Buscando...';
+            // No hay texto que cambiar, se podría cambiar el ícono si se desea
             loader.style.display = "flex";
             errorContainer.innerHTML = "";
         } else {
             submitButton.disabled = false;
-            submitButton.querySelector('span').textContent = 'Verificar';
             loader.style.display = "none";
         }
       }
@@ -685,6 +709,7 @@
           const card = document.createElement('div');
           card.className = `certificate-card`;
           card.style.animationDelay = `${index * 100}ms`; // Efecto escalonado
+          // --- MODIFICADO: Enlace de descarga sin texto, con title ---
           card.innerHTML = `
               <div class="card-header">
                 <h3>${cert.descripcion}</h3>
@@ -694,8 +719,8 @@
                 <p><strong>Emitido el:</strong> ${cert.fecha}</p>
               </div>
               <div class="card-footer">
-                <a href="${cert.urlPdf}" target="_blank" rel="noopener noreferrer" class="download-link ${typeClass}">
-                  <i class="fi fi-rr-file-pdf"></i>Ver Certificado (PDF)
+                <a href="${cert.urlPdf}" target="_blank" rel="noopener noreferrer" class="download-link ${typeClass}" title="Ver Certificado (PDF)">
+                  <i class="fi fi-rr-file-pdf"></i>
                 </a>
               </div>`;
           certificatesListContainer.appendChild(card);
@@ -707,7 +732,7 @@
         let contactInfo = "";
         if (title === "Certificado no encontrado") {
             const WHATSAPP_NUMBER = "59174681419";
-            const PREWRITTEN_MESSAGE = "Hola, tengo una consulta sobre mi certificado de Autodesk.";
+            const PREWRITTEN_MESSAGE = "Hola, Ing tengo una consulta sobre mi certificado Soy: ";
             const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(PREWRITTEN_MESSAGE)}`;
             contactInfo = `
                 <div class="contact-support">
