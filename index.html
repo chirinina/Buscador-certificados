@@ -729,7 +729,7 @@
           const match = originalUrl.match(regex);
           if (match && match[1]) {
               const fileId = match[1];
-             
+              // Construye la URL de descarga directa
               return `https://drive.google.com/uc?export=download&id=${fileId}`;
           }
           return originalUrl; // Devuelve la original como fallback si no encuentra el ID
