@@ -718,6 +718,24 @@
         renderCertificates(filteredCertificates);
       }
 
+      // --- NUEVA FUNCIÓN ---
+      // Convierte una URL de Google Drive a un enlace de descarga directa.
+      function createGoogleDriveDownloadUrl(originalUrl) {
+          if (!originalUrl || !originalUrl.includes('drive.google.com')) {
+              return originalUrl; // Devuelve la original si no es de Google Drive
+          }
+          // Extrae el ID del archivo de la URL
+          const regex = /\/d\/([a-zA-Z0-9_-]+)/;
+          const match = originalUrl.match(regex);
+          if (match && match[1]) {
+              const fileId = match[1];
+              // Construye la URL de descarga directa
+              return `https://drive.google.com/uc?export=download&id=${fileId}`;
+          }
+          return originalUrl; // Devuelve la original como fallback si no encuentra el ID
+      }
+
+
       function renderCertificates(certificatesToRender) {
         const holderName = allCertificates[0]?.nombre || 'Usuario';
         resultsTitle.innerHTML = `<i class="fi fi-rr-file-certificate"></i> Econtramos como: ${holderName}`;
@@ -733,6 +751,10 @@
         certificatesToRender.forEach((cert, index) => {
           const typeClass = cert.type.toLowerCase();
           const card = document.createElement('div');
+          // --- MODIFICACIÓN ---
+          // Se llama a la nueva función para obtener la URL de descarga directa
+          const downloadUrl = createGoogleDriveDownloadUrl(cert.urlPdf);
+
           card.className = `certificate-card ${typeClass}`;
           card.style.animationDelay = `${index * 100}ms`;
           card.innerHTML = `
@@ -749,8 +771,10 @@
                 <p><i class="fi fi-rr-calendar"></i> <strong>Emitido el:</strong> ${cert.fecha}</p>
               </div>
               <div class="card-footer">
-                <a href="${cert.urlPdf}" target="_blank" rel="noopener noreferrer" class="download-link">
-                  <i class="fi fi-rr-file-pdf"></i> Ver (PDF)
+                <!-- --- MODIFICACIÓN --- -->
+                <!-- Se usa la nueva URL, se añade 'download' y se cambia el texto/icono -->
+                <a href="${downloadUrl}" download class="download-link">
+                  <i class="fi fi-rr-download"></i> Descargar (PDF)
                 </a>
               </div>
             </div>
@@ -776,6 +800,7 @@
                     </a>
                 </div>`;
         }
+
         errorContainer.innerHTML = `
           <div class="error-message">
             <strong>${title}:</strong> ${message}
