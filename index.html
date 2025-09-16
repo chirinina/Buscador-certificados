@@ -13,10 +13,11 @@
 
       /* --- NUEVA Paleta de Colores Vibrante --- */
       :root {
-        --primary-color: #0052D4;  /* Azul Fuerte */
-        --secondary-color: #65C7F7; /* Azul Cielo */
+        --primary-color: #011f50;  /* Azul Fuerte */
+        --secondary-color: #035077; /* Azul Cielo */
         --accent-color: #FFD200;   /* Amarillo Vibrante */
-        --success-color: #05C148;  /* Verde Fuerte */
+        --success-color: #05C148;
+        --success-colors: #0061ff;  /* Verde Fuerte */
         --error-color: #dc3545;
         --orange-accent: #F7971E;  /* Naranja Fuerte */
 
@@ -86,7 +87,7 @@
         text-align: center;
         border-top: 4px solid; /* Borde más delgado */
         border-image-slice: 1;
-        border-image-source: linear-gradient(to left, var(--accent-color), var(--primary-color), var(--success-color));
+        border-image-source: linear-gradient(to left, var(--accent-color), var(--success-colors), var(--success-color));
         padding-top: 30px; /* Espacio reducido */
       }
 
@@ -173,14 +174,14 @@
         background: var(--primary-color);
         color: white;
         border: none;
-        padding: 12px; /* Ligeramente más alto para mejor click */
-        border-radius: 10px; /* Coincide con el input */
+        padding: 8px; /* Ligeramente más alto para mejor click */
+        border-radius: 30px; /* Coincide con el input */
         cursor: pointer;
         font-size:9px;
         font-weight: 600;
         transition: all 0.3s ease;
         box-shadow: 0 3px 10px var(--shadow-color); /* Más sutil */
-        width: 20%; /* Botón de ancho completo */
+        width: 33%; /* Botón de ancho completo */
       }
 
       .submit-button:hover {
@@ -361,7 +362,6 @@
       .certificate-card {
         background: var(--surface-color);
         border-radius: 14px; /* Reducido */
-        box-shadow: 0 6px 25px var(--shadow-color); /* Sombra reducida */
         transition: transform 0.3s, box-shadow 0.3s;
         display: flex;
         flex-direction: column;
@@ -369,7 +369,7 @@
         overflow: hidden;
         border-left: 5px solid; /* Borde reducido */
       }
-      .certificate-card.estudiante { border-color: var(--success-color); }
+      .certificate-card.estudiante { border-color: #011f50; }
       .certificate-card.docente { border-color: var(--orange-accent); }
 
       .certificate-card:hover {
@@ -398,11 +398,30 @@
         border-bottom: 1px solid var(--border-color);
       }
       .card-header h3 {
-        font-size: 1.15rem; /* Reducido */
+        font-size: 0.9rem;                       /* Letras pequeñas */
         font-weight: 600;
-        line-height: 1.4;
-        padding-right: 12px; /* Reducido */
+        font-family: "Times New Roman", serif;   /* Estilo gótico */
+        line-height: 1.3;
+        padding-right: 8px;
+        color: #222;
+        cursor: pointer;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 1;   /* Mostrar solo 1 línea */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        max-height: 1.5em;       /* Altura inicial */
+        transition: max-height 0.4s ease;
       }
+
+      /* Cuando pasas el cursor, se despliega */
+      .card-header h3:hover {
+        -webkit-line-clamp: unset; /* Quita límite */
+        max-height: 500px;         /* Altura grande para mostrar todo */
+      }
+
       .certificate-badge {
         padding: 5px 12px; /* Reducido */
         border-radius: 20px;
@@ -446,7 +465,7 @@
         gap: 8px;
         text-decoration: none;
         padding: 10px 14px;
-        border-radius: 8px; /* Reducido */
+        border-radius: 38px; /* Reducido */
         font-weight: 600;
         color: white;
         background-color: var(--primary-color);
@@ -505,7 +524,7 @@
           </div>
           <button type="submit" class="submit-button">
             <i class="fi fi-rr-search-alt"></i>
-            <span>Verificar</span>
+            <span>Buscar</span>
           </button>
         </form>
         <div id="loader" style="display: none">
@@ -701,7 +720,7 @@
 
       function renderCertificates(certificatesToRender) {
         const holderName = allCertificates[0]?.nombre || 'Usuario';
-        resultsTitle.innerHTML = `<i class="fi fi-rr-file-certificate"></i> Certificados de ${holderName}`;
+        resultsTitle.innerHTML = `<i class="fi fi-rr-file-certificate"></i> Econtramos como: ${holderName}`;
         resultsCount.textContent = `Se encontraron ${certificatesToRender.length} de ${allCertificates.length} certificados.`;
         certificatesListContainer.innerHTML = "";
         if (certificatesToRender.length === 0) {
@@ -717,21 +736,25 @@
           card.className = `certificate-card ${typeClass}`;
           card.style.animationDelay = `${index * 100}ms`;
           card.innerHTML = `
+            <div class="card-content" style="border:1px solid #ddd; border-radius:10px; padding:15px; max-width:350px; background:#fff; box-shadow:0 4px 8px rgba(0,0,0,0.1); font-family:Arial,sans-serif;">
             <div class="card-content">
               <div class="card-header">
-                <h3>${cert.descripcion}</h3>
-                <span class="certificate-badge ${typeClass}">${cert.type}</span>
+                <h3><i class="fi fi-rr-certificate"></i> ${cert.descripcion}</h3>
+                <span class="certificate-badge ${typeClass}">
+                  <i class="fi fi-rr-badge"></i> ${cert.type}
+                </span>
               </div>
               <div class="card-body">
-                <p><strong>Sede:</strong> <span class="badge-sede">${cert.sede}</span></p>
-                <p><strong>Emitido el:</strong> ${cert.fecha}</p>
+                <p><i class="fi fi-rr-building"></i> <strong>Sede:</strong> <span class="badge-sede">${cert.sede}</span></p>
+                <p><i class="fi fi-rr-calendar"></i> <strong>Emitido el:</strong> ${cert.fecha}</p>
               </div>
               <div class="card-footer">
                 <a href="${cert.urlPdf}" target="_blank" rel="noopener noreferrer" class="download-link">
-                  <i class="fi fi-rr-file-pdf"></i>Ver (PDF)
+                  <i class="fi fi-rr-file-pdf"></i> Ver (PDF)
                 </a>
               </div>
-            </div>`;
+            </div>
+            `;
           certificatesListContainer.appendChild(card);
         });
       }
