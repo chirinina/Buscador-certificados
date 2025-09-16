@@ -298,7 +298,7 @@
         background-color: var(--surface-color);
         padding: 18px; /* Reducido */
         border-radius: 16px; /* Reducido */
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra reducida */
+        /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); Sombra reducida */
         display: flex;
         flex-direction: column;
         gap: 15px; /* Reducido */
@@ -330,7 +330,7 @@
         width: 100%;
         padding: 10px 15px; /* Reducido */
         border: 1px solid var(--border-color);
-        border-radius: 8px; /* Reducido */
+        border-radius: 28px; /* Reducido */
         background-color: var(--background-color);
         font-family: "Poppins", sans-serif;
         font-size: 0.9rem; /* Reducido */
@@ -542,7 +542,7 @@
         <h2 id="results-title"></h2>
         <p id="results-count"></p>
         <button id="new-search" class="new-search-button">
-            <i class="fi fi-rr-search"></i> Realizar Otra Búsqueda
+            <i class="fi fi-rr-search"></i>Otra Búsqueda
         </button>
       </header>
 
@@ -614,7 +614,7 @@
         e.preventDefault();
         const searchId = searchInput.value.trim().replace(/\s/g, "");
         if (!/^\d{7,}$/.test(searchId)) {
-          displayError("Carnet no válido", "Por favor, ingrese un número de carnet válido (al menos 7 dígitos, sin letras ni guiones).");
+          displayError("Ups. :(  Carnet no válido", "Por favor, ingrese un número de carnet válido (al menos 7 dígitos, sin letras ni guiones).");
           return;
         }
         setLoadingState(true);
@@ -637,7 +637,7 @@
             populateFilters();
             applyFiltersAndRender();
           } else {
-            displayError("Certificado no encontrado", "Verifique que el número sea correcto. Si el problema persiste, por favor contacte al soporte.");
+            displayError("Ups Certificado no encontrado", "Verifique que el número sea correcto. Si el problema persiste, por favor contacte al soporte.");
           }
         } catch (error) {
           console.error("Fetch error:", error);
@@ -736,7 +736,7 @@
           card.className = `certificate-card ${typeClass}`;
           card.style.animationDelay = `${index * 100}ms`;
           card.innerHTML = `
-            <div class="card-content" style="border:1px solid #ddd; border-radius:10px; padding:15px; max-width:350px; background:#fff; box-shadow:0 4px 8px rgba(0,0,0,0.1); font-family:Arial,sans-serif;">
+            <div class="card-content" style="border:1px solid #ddd; border-radius:10px; padding:15px; max-width:350px; background:#f9f9f9; box-shadow:0 4px 8px rgba(0,0,0,0.1); font-family:Arial,sans-serif;">
             <div class="card-content">
               <div class="card-header">
                 <h3><i class="fi fi-rr-certificate"></i> ${cert.descripcion}</h3>
